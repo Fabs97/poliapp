@@ -21,7 +21,7 @@ import java.util.Optional;
  * [ ] GET      /events/deadlines
  * [ ] GET      /events/custom
  * [X] POST     /events/custom
- * [ ] PATCH    /events/custom
+ * [X] PATCH    /events/custom
  * [ ] GET      /events/social
  * [ ] GET      /events/today
  * [X] GET      /events
@@ -63,8 +63,8 @@ public class EventController {
         }
     }
 
-    @PatchMapping("/events")
-    public Event patchCustomEvent(@RequestParam(name = "eventId", required = true) Long eventId, @RequestBody Event patch) throws
+    @PatchMapping("/events/custom")
+    public Event patchCustomEvent(@RequestParam(name = "eventId") Long eventId, @RequestBody Event patch) throws
             InternalServerErrorException, ResourceNotFoundException {
         return eventService.patch(eventId, patch);
     }
