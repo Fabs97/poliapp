@@ -5,12 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Date;
 import java.util.List;
 
 public interface OccupancyRepository extends JpaRepository<Occupancy, Long> {
 
 
+//    TODO: add WHERE room = o.ROOM
     @Query(
             value = "SELECT * FROM SYSTEM.occupancy o WHERE " +
                     "o.DATE_START BETWEEN TO_TIMESTAMP(:dateStart, 'YYYY-MM-DD HH:MI:SS.FF') AND TO_TIMESTAMP(:dateEnd, 'YYYY-MM-DD HH:MI:SS.FF') OR " +

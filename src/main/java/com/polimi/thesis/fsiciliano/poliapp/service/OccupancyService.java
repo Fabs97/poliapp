@@ -9,9 +9,7 @@ import com.polimi.thesis.fsiciliano.poliapp.repository.OccupancyRepository;
 import com.polimi.thesis.fsiciliano.poliapp.util.U;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +38,6 @@ public class OccupancyService {
             throws ResourceNotFoundException, ForbiddenException {
         Event event = eventService.findById(eventId).orElseThrow(() -> new ResourceNotFoundException("Event not found for this id :: " + eventId));
         {
-//            TODO: Must check if it is possible to add occupancy (business logic)
             if (event.getOccupancies().add(occupancy)) {
                 occupancyRepository.save(occupancy);
                 eventService.save(event);
@@ -62,6 +59,7 @@ public class OccupancyService {
     }
 
     private boolean canSaveOccupancy(Occupancy occupancy) {
+//        TODO: discuss business logic with ASICT
         List<Occupancy> list = occupancyRepository.getOccupanciesInDateRangeOf(
                 U.formatDateToORCL(occupancy.getDateStart()),
                 U.formatDateToORCL(occupancy.getDateEnd()));
