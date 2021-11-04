@@ -1,8 +1,13 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "occupancy")
 public class Occupancy {
@@ -20,7 +25,8 @@ public class Occupancy {
     @Column(name = "whole_room", nullable = false)
     private Boolean wholeRoom;
 
-    @OneToOne
+
+    @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
 
@@ -28,46 +34,10 @@ public class Occupancy {
 
     public Occupancy () {}
 
-    public Occupancy(Date dateStart, Date dateEnd, Boolean wholeRoom) {
+    public Occupancy(Date dateStart, Date dateEnd, Boolean wholeRoom, Room room) {
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.wholeRoom = wholeRoom;
+        this.room = room;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
-    }
-
-    public Date getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public Boolean getWholeRoom() {
-        return wholeRoom;
-    }
-
-    public void setWholeRoom(Boolean wholeRoom) {
-        this.wholeRoom = wholeRoom;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
 }

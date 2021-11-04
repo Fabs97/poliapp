@@ -1,7 +1,13 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.util.Collection;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "room")
 public class Room {
@@ -20,43 +26,14 @@ public class Room {
     @JoinColumn(name = "building_id")
     private Building building;
 
+    @OneToMany(mappedBy = "room")
+    private Collection<Occupancy> occupancy;
+
     public Room() {}
 
     public Room(String floor, String name, Building building) {
         this.floor = floor;
         this.name = name;
-        this.building = building;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFloor() {
-        return floor;
-    }
-
-    public void setFloor(String floor) {
-        this.floor = floor;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Building getBuilding() {
-        return building;
-    }
-
-    public void setBuilding(Building building) {
         this.building = building;
     }
 }

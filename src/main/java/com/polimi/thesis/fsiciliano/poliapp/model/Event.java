@@ -1,24 +1,14 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.polimi.thesis.fsiciliano.poliapp.exception.InternalServerErrorException;
-import org.springframework.core.annotation.Order;
-import org.springframework.data.web.JsonPath;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "events")
 public class Event {
@@ -55,54 +45,6 @@ public class Event {
         this.occupancies = occupancies;
         this.title = title;
         this.notes = notes;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public Date getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public List<Occupancy> getOccupancies() {
-        return occupancies;
-    }
-
-    public void setOccupancies(List<Occupancy> occupancies) {
-        this.occupancies = occupancies;
     }
 
 }
