@@ -5,6 +5,7 @@ import com.polimi.thesis.fsiciliano.poliapp.exception.InternalServerErrorExcepti
 import com.polimi.thesis.fsiciliano.poliapp.exception.ResourceNotFoundException;
 import com.polimi.thesis.fsiciliano.poliapp.model.Event;
 import com.polimi.thesis.fsiciliano.poliapp.model.Occupancy;
+import com.polimi.thesis.fsiciliano.poliapp.repository.EventRepository;
 import com.polimi.thesis.fsiciliano.poliapp.repository.OccupancyRepository;
 import com.polimi.thesis.fsiciliano.poliapp.util.U;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,16 @@ public class OccupancyService {
     @Autowired
     private OccupancyRepository occupancyRepository;
 
+    @Autowired
+    private EventRepository eventRepository;
+
     public Optional<Occupancy> findById(Long occupancyId) {
         return occupancyRepository.findById(occupancyId);
     }
 
     public List<Occupancy> findByEventId(Long eventId)
             throws ResourceNotFoundException {
-        Event event = eventService.findById(eventId).orElseThrow(() -> new ResourceNotFoundException("Event not found for this id :: " + eventId));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new ResourceNotFoundException("Event not found for this id :: " + eventId));
         {
             return event.getOccupancies();
         }
@@ -36,7 +40,7 @@ public class OccupancyService {
 
     public List<Occupancy> saveOccupancyToEvent(Long eventId, Occupancy occupancy)
             throws ResourceNotFoundException, ForbiddenException {
-        Event event = eventService.findById(eventId).orElseThrow(() -> new ResourceNotFoundException("Event not found for this id :: " + eventId));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new ResourceNotFoundException("Event not found for this id :: " + eventId));
         {
             if (event.getOccupancies().add(occupancy)) {
                 occupancyRepository.save(occupancy);
@@ -62,7 +66,8 @@ public class OccupancyService {
 //        TODO: discuss business logic with ASICT
         List<Occupancy> list = occupancyRepository.getOccupanciesInDateRangeOf(
                 U.formatDateToORCL(occupancy.getDateStart()),
-                U.formatDateToORCL(occupancy.getDateEnd()));
+                U.formatDateToORCL(occupancy.getDateEnd()),
+                occupancy.getRoom().getId());
         return list.isEmpty();
     }
 }

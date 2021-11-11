@@ -1,18 +1,15 @@
 package com.polimi.thesis.fsiciliano.poliapp.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
+import com.polimi.thesis.fsiciliano.poliapp.dto.event.EventGetDTO;
+import com.polimi.thesis.fsiciliano.poliapp.dto.event.EventMapper;
 import com.polimi.thesis.fsiciliano.poliapp.exception.InternalServerErrorException;
 import com.polimi.thesis.fsiciliano.poliapp.exception.ResourceNotFoundException;
-import com.polimi.thesis.fsiciliano.poliapp.model.Building;
 import com.polimi.thesis.fsiciliano.poliapp.model.Event;
 import com.polimi.thesis.fsiciliano.poliapp.repository.EventRepository;
 import com.polimi.thesis.fsiciliano.poliapp.util.U;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Optional;
 
 @Service
@@ -23,19 +20,29 @@ public class EventService {
     @Autowired
     private BuildingService buildingService;
 
+    @Autowired
+    private EventMapper eventMapper;
 
-    public Optional<Event> findById(Long eventId) {
+
+    public EventGetDTO findById(Long eventId) throws ResourceNotFoundException {
         Optional<Event> event = eventRepository.findById(eventId);
 //        Building building = buildingService.findById(event.room);
-        return event;
+        if(event.isPresent())
+            return eventMapper.eventToGetDTO(event.get());
+        else
+            throw new ResourceNotFoundException("Event not found for this id :: " + eventId);
     }
 
     public Event save(Event event) {
         return eventRepository.save(event);
     }
 
-    public void delete(Event event){
-        eventRepository.delete(event);
+    public void delete(Long eventId) throws ResourceNotFoundException{
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found for this id :: " + eventId));
+        {
+            eventRepository.delete(event);
+        }
     }
 
     public Event patch(Long eventId, Event patch) throws InternalServerErrorException, ResourceNotFoundException{

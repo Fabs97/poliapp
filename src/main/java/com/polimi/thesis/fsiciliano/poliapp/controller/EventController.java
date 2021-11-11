@@ -3,6 +3,7 @@ package com.polimi.thesis.fsiciliano.poliapp.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import com.polimi.thesis.fsiciliano.poliapp.dto.event.EventGetDTO;
 import com.polimi.thesis.fsiciliano.poliapp.exception.BadRequestException;
 import com.polimi.thesis.fsiciliano.poliapp.exception.InternalServerErrorException;
 import com.polimi.thesis.fsiciliano.poliapp.exception.ResourceNotFoundException;
@@ -42,7 +43,7 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping("/events")
-    public Optional<Event> getEvent(@RequestParam(name = "id") Long eventId) {
+    public EventGetDTO getEvent(@RequestParam(name = "id") Long eventId) throws ResourceNotFoundException{
         return eventService.findById(eventId);
     }
 
@@ -53,14 +54,9 @@ public class EventController {
 
     @DeleteMapping("/events")
     @ResponseBody
-    public ResponseEntity deleteEvent(@RequestParam(name = "id") Long eventId)
-            throws ResourceNotFoundException{
-        Event event = eventService.findById(eventId)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found for this id :: " + eventId));
-        {
-            eventService.delete(event);
-            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-        }
+    public ResponseEntity deleteEvent(@RequestParam(name = "id") Long eventId) throws ResourceNotFoundException{
+        eventService.delete(eventId);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/events/custom")

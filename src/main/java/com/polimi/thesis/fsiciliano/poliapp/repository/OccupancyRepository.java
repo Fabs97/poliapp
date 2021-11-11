@@ -15,10 +15,12 @@ public interface OccupancyRepository extends JpaRepository<Occupancy, Long> {
             value = "SELECT * FROM SYSTEM.occupancy o WHERE " +
                     "o.DATE_START BETWEEN TO_TIMESTAMP(:dateStart, 'YYYY-MM-DD HH:MI:SS.FF') AND TO_TIMESTAMP(:dateEnd, 'YYYY-MM-DD HH:MI:SS.FF') OR " +
                     "o.DATE_END BETWEEN TO_TIMESTAMP(:dateStart, 'YYYY-MM-DD HH:MI:SS.FF') AND TO_TIMESTAMP(:dateEnd, 'YYYY-MM-DD HH:MI:SS.FF') OR " +
-                    "o.DATE_START < TO_TIMESTAMP(:dateStart, 'YYYY-MM-DD HH:MI:SS.FF') AND o.DATE_END > TO_TIMESTAMP(:dateEnd, 'YYYY-MM-DD HH:MI:SS.FF') ",
+                    "o.DATE_START < TO_TIMESTAMP(:dateStart, 'YYYY-MM-DD HH:MI:SS.FF') AND o.DATE_END > TO_TIMESTAMP(:dateEnd, 'YYYY-MM-DD HH:MI:SS.FF') AND" +
+                    "o.ROOM_ID = :roomId",
             nativeQuery = true
     )
     List<Occupancy> getOccupanciesInDateRangeOf(
             @Param("dateStart") String start,
-            @Param("dateEnd") String end);
+            @Param("dateEnd") String end,
+            @Param("roomId") Long roomId);
 }

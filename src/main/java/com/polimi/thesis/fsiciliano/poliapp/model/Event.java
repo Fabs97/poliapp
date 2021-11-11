@@ -28,6 +28,7 @@ public class Event {
     @Column(name = "notes", nullable = false)
     private String notes;
 
+
     @OrderBy("dateStart ASC")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
