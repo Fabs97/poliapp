@@ -1,13 +1,12 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Collection;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "room")
 public class Room {
@@ -16,24 +15,28 @@ public class Room {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "floor", nullable = false)
-    private String floor;
-
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "building_id")
-    private Building building;
+    @Column(name = "campus", nullable = false)
+    private String campus;
 
-    @OneToMany(mappedBy = "room")
-    private Collection<Occupancy> occupancy;
+    @Column(name = "address", nullable = false)
+    private String address;
+
+    @Column(name = "floor", nullable = false)
+    private String floor;
+
+    @Column(name = "building", nullable = false)
+    private String building;
 
     public Room() {}
 
-    public Room(String floor, String name, Building building) {
-        this.floor = floor;
+    public Room( String name, String campus, String address, String floor, String building) {
         this.name = name;
+        this.campus = campus;
+        this.address = address;
+        this.floor = floor;
         this.building = building;
     }
 }
