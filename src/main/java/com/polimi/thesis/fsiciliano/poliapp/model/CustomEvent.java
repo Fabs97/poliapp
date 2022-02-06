@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "custom_event")
-public class CustomEvent extends Event{
+public class CustomEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
