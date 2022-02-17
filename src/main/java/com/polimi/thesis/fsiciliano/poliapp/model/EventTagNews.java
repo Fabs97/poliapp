@@ -1,8 +1,6 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
