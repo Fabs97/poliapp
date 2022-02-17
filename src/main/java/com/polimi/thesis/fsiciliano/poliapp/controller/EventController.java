@@ -1,8 +1,11 @@
 package com.polimi.thesis.fsiciliano.poliapp.controller;
 
+import com.polimi.thesis.fsiciliano.poliapp.bodies.GETEventsTodayResponse;
+import com.polimi.thesis.fsiciliano.poliapp.bodies.POSTEventsCustomRequest;
 import com.polimi.thesis.fsiciliano.poliapp.exception.BadRequestException;
 import com.polimi.thesis.fsiciliano.poliapp.exception.ResourceNotFoundException;
 import com.polimi.thesis.fsiciliano.poliapp.model.Event;
+import com.polimi.thesis.fsiciliano.poliapp.service.CustomEventService;
 import com.polimi.thesis.fsiciliano.poliapp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,14 +40,32 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private CustomEventService customEventService;
+
+    @PostMapping("/events/custom")
+    public Long postEventsCustom(@RequestBody POSTEventsCustomRequest body) {
+        return customEventService.postNewEvent(body).getId();
+    }
+
+    /**
+     * @param news
+     * @param upcoming
+     * @param highlights
+     * @param limit
+     * @param studentId
+     * @return a List of Events that can bee seen by the requested user, divided as per homepage requirements
+     * @throws BadRequestException
+     */
     @GetMapping("/events/today")
-    public List<Event> getEventsToday(
+    public GETEventsTodayResponse getEventsToday(
             @RequestParam(defaultValue = "true", required = false) Boolean news,
             @RequestParam(defaultValue = "true", required = false) Boolean upcoming,
             @RequestParam(defaultValue = "true", required = false) Boolean highlights,
+            @RequestParam(defaultValue = "10", required = false) Integer limit,
             @RequestParam Long studentId
             ) throws BadRequestException {
-        return eventService.findEventsToday(studentId, news, upcoming, highlights);
+        return eventService.findEventsToday(studentId, news, upcoming, highlights, limit);
     }
 
     /**
