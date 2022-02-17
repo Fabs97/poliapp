@@ -1,6 +1,7 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -8,8 +9,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "room")
 public class Room {
+
+    @GenericGenerator(
+            name = "room_id_generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "ROOM_GENERATOR"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "room_id_generator")
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -29,12 +39,4 @@ public class Room {
     private String building;
 
     public Room() {}
-
-    public Room( String name, String campus, String address, String floor, String building) {
-        this.name = name;
-        this.campus = campus;
-        this.address = address;
-        this.floor = floor;
-        this.building = building;
-    }
 }

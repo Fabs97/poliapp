@@ -1,8 +1,6 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -17,6 +15,9 @@ public class Calendar {
 
     @Column(name = "value", nullable = false)
     private String value;
+
+    @Column(name = "identifier", nullable = false)
+    private String identifier;
 
     public Calendar() {}
 }

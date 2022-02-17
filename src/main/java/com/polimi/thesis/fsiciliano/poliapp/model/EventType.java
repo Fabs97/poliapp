@@ -18,5 +18,8 @@ public class EventType {
     @Column(name = "value", nullable = false)
     private String value;
 
+    @Column(name = "identifier", nullable = false)
+    private String identifier;
+
     public EventType() {}
 }
