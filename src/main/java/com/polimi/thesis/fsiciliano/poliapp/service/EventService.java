@@ -1,5 +1,7 @@
 package com.polimi.thesis.fsiciliano.poliapp.service;
 
+import com.polimi.thesis.fsiciliano.poliapp.bodies.GETEventsTodayResponse;
+import com.polimi.thesis.fsiciliano.poliapp.exception.BadRequestException;
 import com.polimi.thesis.fsiciliano.poliapp.exception.InternalServerErrorException;
 import com.polimi.thesis.fsiciliano.poliapp.exception.ResourceNotFoundException;
 import com.polimi.thesis.fsiciliano.poliapp.model.Event;
@@ -8,11 +10,11 @@ import com.polimi.thesis.fsiciliano.poliapp.util.U;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EventService {
+
     @Autowired
     private EventRepository eventRepository;
 
@@ -31,12 +33,14 @@ public class EventService {
     @Autowired
     private CustomEventService customEventService;
 
-    public List<Event> findEventsToday(Long studentId, Boolean news, Boolean upcoming, Boolean highlights) {
-        List<Event> events = new ArrayList<Event>();
-        if(news) events.addAll(newsService.findTodayNews(studentId));
-//        if(upcoming) events.addAll(newsService.findTodayNews());
-//        if(highlights) events.addAll(newsService.findTodayNews());
-        return events;
+    public GETEventsTodayResponse findEventsToday(Long studentId, Boolean news, Boolean upcoming, Boolean highlights, Integer limit) throws BadRequestException {
+        if(studentId == null || !(studentId instanceof Long)) throw new BadRequestException("Error while parsing student id :: " + studentId);
+        GETEventsTodayResponse response = new GETEventsTodayResponse();
+        if(news) response.setNews(newsService.findTodayNews(studentId, limit));
+        if(highlights) response.setHighlights(administrativeEventService.findHighlights(studentId, limit));
+//      TODO:
+//        if(upcoming) response.setUpcoming(newsService.findTodayNews());
+        return response;
     }
 
     public List<Event> findEventsByStudentId(Long studentId) throws ResourceNotFoundException {
