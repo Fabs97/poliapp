@@ -37,6 +37,4 @@ public class Room {
 
     @Column(name = "building", nullable = false)
     private String building;
-
-    public Room() {}
 }

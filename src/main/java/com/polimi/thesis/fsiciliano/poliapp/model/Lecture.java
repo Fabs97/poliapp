@@ -26,7 +26,7 @@ public class Lecture {
     private String title;
 
     @Column(name = "teaching_code", nullable = false)
-    private String teaching_code;
+    private String teachingCode;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -35,11 +35,9 @@ public class Lecture {
     private String lecturer;
 
     @Column(name = "remote_link", nullable = false)
-    private String remote_link;
+    private String remoteLink;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @MapsId
     private Room room;
-
-    public Lecture() {}
 }

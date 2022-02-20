@@ -13,8 +13,6 @@ public class EventTag{
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "value")
-    private String value;
-
-    public EventTag() {}
+    @Column(name = "event_tag_value")
+    private String eventTagValue;
 }

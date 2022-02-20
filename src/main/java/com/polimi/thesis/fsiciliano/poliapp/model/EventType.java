@@ -13,11 +13,9 @@ public class EventType {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "value", nullable = false)
-    private String value;
+    @Column(name = "event_type_value", nullable = false)
+    private String eventTypeValue;
 
-    @Column(name = "identifier", nullable = false)
-    private String identifier;
-
-    public EventType() {}
+    @Column(name = "event_type_identifier", nullable = false)
+    private String eventTypeIdentifier;
 }

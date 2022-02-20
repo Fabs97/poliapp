@@ -13,11 +13,9 @@ public class Calendar {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "value", nullable = false)
-    private String value;
+    @Column(name = "calendar_value", nullable = false)
+    private String calendarValue;
 
-    @Column(name = "identifier", nullable = false)
-    private String identifier;
-
-    public Calendar() {}
+    @Column(name = "calendar_identifier", nullable = false)
+    private String calendarIdentifier;
 }

@@ -34,6 +34,4 @@ public class News {
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @MapsId
     private Room room;
-
-    public News() {}
 }

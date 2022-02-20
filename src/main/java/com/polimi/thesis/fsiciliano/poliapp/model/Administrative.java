@@ -1,6 +1,7 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,8 +10,16 @@ import java.util.Date;
 @Entity
 @Table(name = "administrative")
 public class Administrative{
+    @GenericGenerator(
+            name = "administrative_id_generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "ADMINISTRATIVE_GENERATOR"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "administrative_id_generator")
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -36,6 +45,4 @@ public class Administrative{
 
     @Column(name = "external_link")
     private String externalLink;
-
-    public Administrative() {}
 }

@@ -20,6 +20,4 @@ public class EventTagNews {
 //    @OneToOne(optional = false, fetch = FetchType.LAZY)
 //    @MapsId
 //    private News news;
-
-    public EventTagNews() {}
 }

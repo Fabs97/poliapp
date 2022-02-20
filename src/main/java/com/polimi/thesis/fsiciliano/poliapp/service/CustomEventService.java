@@ -34,7 +34,7 @@ public class CustomEventService {
         Room roomInRequest = customEventRequest.getRoom();
 
         Optional<Room> roomInDb = roomRepository.findById(roomInRequest.getId());
-        if(!roomInDb.isPresent()) {
+        if(roomInDb.isEmpty()) {
             roomInRequest.setId(null);
             customEventRequest.setRoom(roomRepository.save(roomInRequest));
         } else {
@@ -43,15 +43,13 @@ public class CustomEventService {
 
 //      Replace the student id in custom event request with the one obtained by saving it in the database
         Optional<Student> studentInDb = studentRepository.findById(customEventRequest.getStudentId());
-        Student student = !studentInDb.isPresent()
-                ? studentRepository.save(new Student(customEventRequest.getStudentId()))
-                : studentInDb.get();
+        Student student = studentInDb.orElseGet(() -> studentRepository.save(new Student(customEventRequest.getStudentId())));
 
         CustomEvent newCustomEvent = customEventRepository.save(customEventRequest.getCustomEvent());
 
 //      Create new event record
-        Calendar customCalendar = calendarRepository.findCalendarByIdentifierContaining("custom");
-        EventType eventType = eventTypeRepository.findEventTypeByIdentifierContaining("custom");
+        Calendar customCalendar = calendarRepository.findCalendarByCalendarIdentifierContaining("custom");
+        EventType eventType = eventTypeRepository.findEventTypeByEventTypeIdentifierContaining("custom");
         Event newEvent = eventService.save(customEventRequest.getEvent(customCalendar, eventType, newCustomEvent, student));
 //      Create custom_student records for any shared members
 //      Create shared_contacts and shared_groups joins?
