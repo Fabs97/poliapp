@@ -1,39 +1,42 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Collection;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "room")
 public class Room {
+
+    @GenericGenerator(
+            name = "room_id_generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "ROOM_GENERATOR"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "room_id_generator")
     @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(name = "floor", nullable = false)
-    private String floor;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "building_id")
-    private Building building;
+    @Column(name = "campus", nullable = false)
+    private String campus;
 
-    @OneToMany(mappedBy = "room")
-    private Collection<Occupancy> occupancy;
+    @Column(name = "address", nullable = false)
+    private String address;
+
+    @Column(name = "floor", nullable = false)
+    private String floor;
+
+    @Column(name = "building", nullable = false)
+    private String building;
 
     public Room() {}
-
-    public Room(String floor, String name, Building building) {
-        this.floor = floor;
-        this.name = name;
-        this.building = building;
-    }
 }

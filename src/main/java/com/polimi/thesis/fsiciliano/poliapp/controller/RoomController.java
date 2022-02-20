@@ -2,12 +2,14 @@ package com.polimi.thesis.fsiciliano.poliapp.controller;
 
 import com.polimi.thesis.fsiciliano.poliapp.model.Room;
 import com.polimi.thesis.fsiciliano.poliapp.service.RoomService;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Optional;
 
+@Hidden
 @RestController
 @RequestMapping("/api/v1")
 public class RoomController {

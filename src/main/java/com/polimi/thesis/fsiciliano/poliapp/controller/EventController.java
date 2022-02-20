@@ -1,31 +1,29 @@
 package com.polimi.thesis.fsiciliano.poliapp.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
-import com.polimi.thesis.fsiciliano.poliapp.dto.event.EventGetDTO;
+import com.polimi.thesis.fsiciliano.poliapp.bodies.GETEventsTodayResponse;
+import com.polimi.thesis.fsiciliano.poliapp.bodies.POSTEventsCustomRequest;
 import com.polimi.thesis.fsiciliano.poliapp.exception.BadRequestException;
-import com.polimi.thesis.fsiciliano.poliapp.exception.InternalServerErrorException;
 import com.polimi.thesis.fsiciliano.poliapp.exception.ResourceNotFoundException;
 import com.polimi.thesis.fsiciliano.poliapp.model.Event;
+import com.polimi.thesis.fsiciliano.poliapp.service.CustomEventService;
 import com.polimi.thesis.fsiciliano.poliapp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.Optional;
+import java.util.List;
 
 /**
  * Event API Controller. APIs to do
  * [ ] GET      /events/deadlines
  * [ ] GET      /events/custom
- * [X] POST     /events/custom
- * [X] PATCH    /events/custom
+ * [ ] POST     /events/custom
+ * [ ] PATCH    /events/custom
  * [ ] GET      /events/social
  * [ ] GET      /events/today
  * [X] GET      /events
+ * [X] GET      /events/{eventId}
  * [X] DELETE   /events
  * [ ] GET      /events/calendar
  * [ ] POST     /events/calendar
@@ -42,26 +40,62 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @GetMapping("/events")
-    public EventGetDTO getEvent(@RequestParam(name = "id") Long eventId) throws ResourceNotFoundException{
-        return eventService.findById(eventId);
-    }
+    @Autowired
+    private CustomEventService customEventService;
 
     @PostMapping("/events/custom")
-    public Event createCustomEvent(@Valid @RequestBody Event event) {
-        return eventService.save(event);
+    public Long postEventsCustom(@RequestBody POSTEventsCustomRequest body) {
+        return customEventService.postNewEvent(body).getId();
     }
 
+    /**
+     * @param news
+     * @param upcoming
+     * @param highlights
+     * @param limit
+     * @param studentId
+     * @return a List of Events that can bee seen by the requested user, divided as per homepage requirements
+     * @throws BadRequestException
+     */
+    @GetMapping("/events/today")
+    public GETEventsTodayResponse getEventsToday(
+            @RequestParam(defaultValue = "true", required = false) Boolean news,
+            @RequestParam(defaultValue = "true", required = false) Boolean upcoming,
+            @RequestParam(defaultValue = "true", required = false) Boolean highlights,
+            @RequestParam(defaultValue = "10", required = false) Integer limit,
+            @RequestParam Long studentId
+            ) throws BadRequestException {
+        return eventService.findEventsToday(studentId, news, upcoming, highlights, limit);
+    }
+
+    /**
+     * @param userId
+     * @return a List of Events that can be seen by the requested user
+     * @throws ResourceNotFoundException
+     */
+    @GetMapping("/events")
+    public List<Event> getEvent(@RequestParam Long userId) throws ResourceNotFoundException {
+        return eventService.findEventsByStudentId(userId);
+    }
+
+    /**
+     * @param eventId
+     * @return the Event details with according to the given eventId
+     * @throws ResourceNotFoundException
+     */
+    @GetMapping("/events/{eventId}")
+    public Event getEventById(@PathVariable Long eventId) throws ResourceNotFoundException {
+        return eventService.findEventById(eventId);
+    }
+
+    /**
+     * @param eventId
+     * @return 204 NoContent if the resource has been successfully deleted
+     * @throws ResourceNotFoundException
+     */
     @DeleteMapping("/events")
-    @ResponseBody
-    public ResponseEntity deleteEvent(@RequestParam(name = "id") Long eventId) throws ResourceNotFoundException{
+    public ResponseEntity deleteEvent(@RequestParam Long eventId) throws ResourceNotFoundException {
         eventService.delete(eventId);
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-    }
-
-    @PatchMapping("/events/custom")
-    public Event patchCustomEvent(@RequestParam(name = "eventId") Long eventId, @RequestBody Event patch) throws
-            InternalServerErrorException, ResourceNotFoundException {
-        return eventService.patch(eventId, patch);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
