@@ -1,5 +1,6 @@
 package com.polimi.thesis.fsiciliano.poliapp;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -8,8 +9,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class PoliAppBackendApplication {
 
 	public static void main(String[] args) {
-	 	AnnotationConfigApplicationContext context =  new AnnotationConfigApplicationContext();
-//		context.register(ModelMapper.class);
+		AnnotationConfigApplicationContext context =  new AnnotationConfigApplicationContext();
+		context.register(ModelMapper.class);
 		SpringApplication.run(PoliAppBackendApplication.class, args);
 	}
 
