@@ -14,12 +14,9 @@ public class EventTagNews {
     private Long id;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @MapsId
     private EventTag eventTag;
 
 //    @OneToOne(optional = false, fetch = FetchType.LAZY)
-//    @MapsId
 //    private News news;
 
-    public EventTagNews() {}
 }

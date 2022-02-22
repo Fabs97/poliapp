@@ -32,8 +32,5 @@ public class News {
     private String longDescription;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @MapsId
     private Room room;
-
-    public News() {}
 }

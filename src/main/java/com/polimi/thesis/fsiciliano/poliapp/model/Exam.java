@@ -26,7 +26,7 @@ public class Exam {
     private String title;
 
     @Column(name = "teaching_code", nullable = false)
-    private String teaching_code;
+    private String teachingCode;
 
     @Column(name = "description", nullable = false)
     private String description;
