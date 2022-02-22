@@ -3,6 +3,7 @@ package com.polimi.thesis.fsiciliano.poliapp.model;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 
 @Data
@@ -50,23 +51,23 @@ public class Event {
     private String badgeNumber;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @MapsId
+    @Nullable
     private Exam exam;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @MapsId
+    @Nullable
     private Lecture lecture;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @MapsId
+    @Nullable
     private Administrative administrative;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @MapsId
+    @Nullable
     private News news;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @MapsId
+    @Nullable
     private CustomEvent custom;
 
 }

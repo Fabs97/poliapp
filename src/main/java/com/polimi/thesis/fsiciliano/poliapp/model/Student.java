@@ -22,7 +22,7 @@ public class Student {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    public Student() {}
+    public Student () {}
 
     public Student(Long id) {
         this.id = id;

@@ -43,8 +43,13 @@ public class EventController {
     @Autowired
     private CustomEventService customEventService;
 
+    @GetMapping("/events/custom")
+    public List<Event> getEventsCustom(@RequestParam(defaultValue = "10", required = false) Integer limit,
+                                             @RequestParam() Long studentId) throws ResourceNotFoundException {
+        return customEventService.getEventsByUserId(studentId, limit);
+    }
     @PostMapping("/events/custom")
-    public Long postEventsCustom(@RequestBody POSTEventsCustomRequest body) {
+    public Long postEventsCustom(@RequestBody POSTEventsCustomRequest body) throws BadRequestException {
         return customEventService.postNewEvent(body).getId();
     }
 
@@ -75,7 +80,7 @@ public class EventController {
      */
     @GetMapping("/events")
     public List<Event> getEvent(@RequestParam Long userId,
-                                @RequestParam(required = false) Integer limit) throws ResourceNotFoundException {
+                                @RequestParam(defaultValue = "10", required = false) Integer limit) throws ResourceNotFoundException {
         return eventService.findEventsByStudentId(userId, limit);
     }
 
