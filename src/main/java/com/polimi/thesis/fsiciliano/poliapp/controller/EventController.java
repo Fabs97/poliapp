@@ -74,8 +74,9 @@ public class EventController {
      * @throws ResourceNotFoundException
      */
     @GetMapping("/events")
-    public List<Event> getEvent(@RequestParam Long userId) throws ResourceNotFoundException {
-        return eventService.findEventsByStudentId(userId);
+    public List<Event> getEvent(@RequestParam Long userId,
+                                @RequestParam(required = false) Integer limit) throws ResourceNotFoundException {
+        return eventService.findEventsByStudentId(userId, limit);
     }
 
     /**

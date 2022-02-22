@@ -8,6 +8,7 @@ import com.polimi.thesis.fsiciliano.poliapp.model.Event;
 import com.polimi.thesis.fsiciliano.poliapp.repository.EventRepository;
 import com.polimi.thesis.fsiciliano.poliapp.util.U;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,8 +44,10 @@ public class EventService {
         return response;
     }
 
-    public List<Event> findEventsByStudentId(Long studentId) throws ResourceNotFoundException {
-        List<Event> events = eventRepository.findEventsByStudentId(studentId);
+
+    public List<Event> findEventsByStudentId(Long studentId, Integer limit) throws ResourceNotFoundException {
+        List<Event> events = eventRepository.findAllByStudentId(studentId, PageRequest.of(0, limit));
+
         if(events == null || events.isEmpty()) throw new ResourceNotFoundException("No events found for this user id :: " + studentId);
         return events;
     }
@@ -53,6 +56,10 @@ public class EventService {
         Event event = eventRepository.findEventById(eventId);
         if(event == null) throw new ResourceNotFoundException("No event found with id :: " + eventId);
         return event;
+    }
+
+    public List<Event> findAllByCustomNotNullAndStudentId(Long studentId, Integer limit) {
+        return eventRepository.findAllByCustomNotNullAndStudentId(studentId, PageRequest.of(0, limit));
     }
 
     public Event save(Event event) {
