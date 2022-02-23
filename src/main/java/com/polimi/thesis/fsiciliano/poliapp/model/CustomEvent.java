@@ -1,6 +1,9 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -9,6 +12,9 @@ import java.util.Set;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "custom_event")
 public class CustomEvent {
 
@@ -48,11 +54,4 @@ public class CustomEvent {
 
     @ManyToMany
     private Set<ContactsGroup> sharedGroups;
-
-    public CustomEvent() {}
-
-    public CustomEvent(Long id) {
-        this.id = id;
-    }
-
 }

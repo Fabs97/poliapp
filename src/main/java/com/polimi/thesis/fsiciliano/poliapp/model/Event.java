@@ -1,6 +1,9 @@
 package com.polimi.thesis.fsiciliano.poliapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.annotation.Nullable;
@@ -8,6 +11,9 @@ import javax.persistence.*;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "event")
 public class Event {
     @GenericGenerator(
