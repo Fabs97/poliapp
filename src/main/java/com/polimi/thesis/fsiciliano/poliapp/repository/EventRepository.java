@@ -10,14 +10,11 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
 
-    Event findEventByIdAndStudentId(Long studentId, Long eventId);
-
     List<Event> findAllByStudentId(@Param("studentId") Long studentId,
                                    Pageable pageable);
 
     Event findEventById(Long eventId);
 
-    List<Event> findAllByCustomNotNullAndStudentId(Long studentId, Pageable pageable);
-
+    List<Event> findAllByStudentIdAndCustomIsNotNull(Long studentId, Pageable pageable);
 
 }

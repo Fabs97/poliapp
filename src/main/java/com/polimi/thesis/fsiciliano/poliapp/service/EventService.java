@@ -59,7 +59,7 @@ public class EventService {
     }
 
     public List<Event> findAllByCustomNotNullAndStudentId(Long studentId, Integer limit) {
-        return eventRepository.findAllByCustomNotNullAndStudentId(studentId, PageRequest.of(0, limit));
+        return eventRepository.findAllByStudentIdAndCustomIsNotNull(studentId, PageRequest.of(0, limit));
     }
 
     public Event save(Event event) {
